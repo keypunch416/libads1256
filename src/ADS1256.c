@@ -14,29 +14,29 @@ static void ADS1256_reset(void)
 
 static void ADS1256_WriteCmd(uint8_t Cmd)
 {
-    DEV_Digital_Write(DEV_CS_PIN, 0);
+    DEV_Digital_Write(DEV_CS0_PIN, 0);
     DEV_SPI_WriteByte(Cmd);
-    DEV_Digital_Write(DEV_CS_PIN, 1);
+    DEV_Digital_Write(DEV_CS0_PIN, 1);
 }
 
 static void ADS1256_WriteReg(uint8_t Reg, uint8_t data)
 {
-    DEV_Digital_Write(DEV_CS_PIN, 0);
+    DEV_Digital_Write(DEV_CS0_PIN, 0);
     DEV_SPI_WriteByte(CMD_WREG | Reg);
     DEV_SPI_WriteByte(0x00);
     DEV_SPI_WriteByte(data);
-    DEV_Digital_Write(DEV_CS_PIN, 1);
+    DEV_Digital_Write(DEV_CS0_PIN, 1);
 }
 
 static uint8_t ADS1256_Read_data(uint8_t Reg)
 {
     uint8_t temp = 0;
-    DEV_Digital_Write(DEV_CS_PIN, 0);
+    DEV_Digital_Write(DEV_CS0_PIN, 0);
     DEV_SPI_WriteByte(CMD_RREG | Reg);
     DEV_SPI_WriteByte(0x00);
     DEV_Delay_ms(1);
     temp = DEV_SPI_ReadByte();
-    DEV_Digital_Write(DEV_CS_PIN, 1);
+    DEV_Digital_Write(DEV_CS0_PIN, 1);
     return temp;
 }
 
@@ -65,7 +65,7 @@ void ADS1256_ConfigADC(ADS1256_gain_e gain, ADS1256_drate_e drate)
     buf[1] = 0x08;
     buf[2] = (0 << 5) | (0 << 3) | (gain << 0);
     buf[3] = ADS1256_drate_bits[drate];
-    DEV_Digital_Write(DEV_CS_PIN, 0);
+    DEV_Digital_Write(DEV_CS0_PIN, 0);
     DEV_SPI_WriteByte(CMD_WREG | 0);
     DEV_SPI_WriteByte(0x03);
 
@@ -73,7 +73,7 @@ void ADS1256_ConfigADC(ADS1256_gain_e gain, ADS1256_drate_e drate)
     DEV_SPI_WriteByte(buf[1]);
     DEV_SPI_WriteByte(buf[2]);
     DEV_SPI_WriteByte(buf[3]);
-    DEV_Digital_Write(DEV_CS_PIN, 1);
+    DEV_Digital_Write(DEV_CS0_PIN, 1);
     DEV_Delay_ms(1);
 }
 
@@ -152,13 +152,13 @@ static uint32_t ADS1256_Read_ADC_Data(void)
 
     ADS1256_WaitDRDY();
     DEV_Delay_us(10);
-    DEV_Digital_Write(DEV_CS_PIN, 0);
+    DEV_Digital_Write(DEV_CS0_PIN, 0);
     DEV_SPI_WriteByte(CMD_RDATA);
     DEV_Delay_us(10);
     buf[0] = DEV_SPI_ReadByte();
     buf[1] = DEV_SPI_ReadByte();
     buf[2] = DEV_SPI_ReadByte();
-    DEV_Digital_Write(DEV_CS_PIN, 1);
+    DEV_Digital_Write(DEV_CS0_PIN, 1);
     read = ((uint32_t)buf[0] << 16) & 0x00FF0000;
     read |= ((uint32_t)buf[1] << 8);  /* Pay attention to It is wrong   read |= (buf[1] << 8) */
     read |= buf[2];
@@ -175,12 +175,12 @@ uint32_t ADS1256_GetValueRDATAC()
 
     ADS1256_WaitDRDY();
     DEV_Delay_us(3); // от этих задержек прямо зависит будет ли ~30к попугаев
-    DEV_Digital_Write(DEV_CS_PIN, 0);
+    DEV_Digital_Write(DEV_CS0_PIN, 0);
     DEV_Delay_us(5); // от этих задержек прямо зависит будет ли ~30к попугаев
     buf[0] = DEV_SPI_ReadByte();
     buf[1] = DEV_SPI_ReadByte();
     buf[2] = DEV_SPI_ReadByte();
-    DEV_Digital_Write(DEV_CS_PIN, 1);
+    DEV_Digital_Write(DEV_CS0_PIN, 1);
     read = ((uint32_t)buf[0] << 16) & 0x00FF0000;
     read |= ((uint32_t)buf[1] << 8);  /* Pay attention to It is wrong   read |= (buf[1] << 8) */
     read |= buf[2];

@@ -1,12 +1,11 @@
 cmake_minimum_required(VERSION 2.8.11)
-project(ads1256-test)
 
 add_definitions(-Wall)
 
 include_directories(../include)
 
-set(SRC
-    test.c)
+add_executable(test_adc test_adc.c)
+target_link_libraries(test_adc ads1256)
 
-add_executable(${PROJECT_NAME} ${SRC})
-target_link_libraries(${PROJECT_NAME} ads1256)
+add_executable(test_dac test_dac.c)
+target_link_libraries(test_dac ads1256)

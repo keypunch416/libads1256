@@ -3,10 +3,12 @@
 
 static void DEV_GPIOConfig(void)
 {
+    /* ADS1256 */
     bcm2835_gpio_fsel(DEV_RST_PIN, BCM2835_GPIO_FSEL_OUTP);
-    bcm2835_gpio_fsel(DEV_CS_PIN, BCM2835_GPIO_FSEL_OUTP);
-
+    bcm2835_gpio_fsel(DEV_CS0_PIN, BCM2835_GPIO_FSEL_OUTP);
     bcm2835_gpio_fsel(DEV_DRDY_PIN,BCM2835_GPIO_FSEL_INPT);
+    /* DAC8532 */
+    bcm2835_gpio_fsel(DEV_CS1_PIN, BCM2835_GPIO_FSEL_OUTP);
 }
 
 uint8_t DEV_ModuleInit(void)

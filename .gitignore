@@ -3,5 +3,5 @@
 **/CMakeFiles
 **/Makefile
 **/libads1256.a
-**/ads1256-test
+**/test_*
 **/raw
